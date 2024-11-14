@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class AccountSignUpDTO {
+public class AccountDTO {
     @JsonIgnore
     @Schema(hidden = true)
     private UUID uuid;

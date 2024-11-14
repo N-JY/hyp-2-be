@@ -12,6 +12,14 @@
 
 - poetry add pymysQL psycopg2
 
-- .\venv\Scripts\python.exe HyperMedicusApplication.py
+- fastapi scripts run
+    - path : fastapi
+    - .\venv\Scripts\python.exe app\HyperMedicusApplication.py
 
-- .\venv\Scripts\python.exe Test_HyperMedicusApplication.py
+- pytest scripts run
+    - path : fastapi
+    - pytest -s
+
+- fastapi uvicorn run
+    - path : fastapi
+    - uvicorn app.HyperMedicusApplication:app --host 0.0.0.0 --port 8000

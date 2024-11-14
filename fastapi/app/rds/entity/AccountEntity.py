@@ -1,4 +1,4 @@
-from ...resources.Sqlalchemy import Base
+from app.resources.Sqlalchemy import Base
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql.sqltypes import TIMESTAMP
