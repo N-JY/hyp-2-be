@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from app.HyperMedicusApplication import app
-from app.model.AccountDTO import AccountSignUpDTO
+from app.model.AccountDTO import AccountDTO
 from app.resources.Sqlalchemy import SessionLocal
 from app.service import AccountService
 
@@ -9,7 +9,7 @@ client = TestClient(app)
 
 @pytest.fixture
 def accountSignupDto():
-    return AccountSignUpDTO(
+    return AccountDTO(
         password="password",
         name="Test Name",
         email="test@email.com",

@@ -1,13 +1,12 @@
 package com.hypermedicus.service;
 
+import com.hypermedicus.common.utils.JWTUtil;
 import com.hypermedicus.connect.AccountConnect;
 import com.hypermedicus.mapper.AccountMapper;
 import com.hypermedicus.model.AccountDTO;
 import com.hypermedicus.payload.response.AccountResponse;
 import com.hypermedicus.rds.entity.AccountEntity;
-import com.hypermedicus.rds.entity.AccountClassificationEntity;
-import com.hypermedicus.rds.repository.AccountClassificationEntityRepository;
-import com.hypermedicus.rds.repository.AccountEntityRepository;
+import com.hypermedicus.rds.entity.AccountInformationEntity;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,17 +17,11 @@ import java.util.UUID;
 public class AccountService {
 
     private final AccountMapper mapper;
-    private final AccountEntityRepository accountEntityRepository;
-    private final AccountClassificationEntityRepository accountClassificationEntityRepository;
     private final AccountConnect accountConnect;
 
     public AccountService(AccountMapper mapper
-    , AccountEntityRepository accountEntityRepository
-    , AccountClassificationEntityRepository accountClassificationEntityRepository
     , AccountConnect accountConnect) {
         this.mapper = mapper;
-        this.accountEntityRepository = accountEntityRepository;
-        this.accountClassificationEntityRepository = accountClassificationEntityRepository;
         this.accountConnect = accountConnect;
     }
 
@@ -38,30 +31,18 @@ public class AccountService {
         dto.setUuid(uuid);
 
         AccountEntity accountEntity = mapper.toAccountEntity(dto, uuid);
-        AccountClassificationEntity accountClassificationEntity = mapper.toAccountClassificationEntity(dto, uuid);
+        AccountInformationEntity accountInformationEntity = mapper.toAccountInformationEntity(dto, uuid);
 
-        accountConnect.signUpAccount(accountEntity, accountClassificationEntity); 
-
-        accountEntityRepository.save(accountEntity);
-        accountClassificationEntityRepository.save(accountClassificationEntity);
+        accountConnect.signUpAccount(accountEntity, accountInformationEntity); 
 
         AccountResponse accountResponse = accountConnect.getAccount(uuid);
+        
+        String accessToken = JWTUtil.generateToken(uuid, 10);
+        String refreshToken = JWTUtil.generateToken(uuid, 60*24);
+
+        accountResponse.setAccessToken(accessToken);
+        accountResponse.setRefreshToken(refreshToken);
+        
         return accountResponse;
     }
-
-    /*
-    @Transactional(readOnly = true)
-    public ApiResponse<AccountResponse> getAccount(UUID uuid) {
-        AccountEntity accountEntity = accountEntityRepository.findByUuid(uuid)
-        .orElseThrow(() -> new NoSuchElementException("AccountEntity not found with UUID: " + uuid));
-        
-        AccountClassificationEntity accountClassificationEntity = accountClassificationEntityRepository.findByUuid(uuid)
-        .orElseThrow(() -> new NoSuchElementException("accountClassificationEntity not found with UUID: " + uuid));
-        
-        ApiResponse<AccountResponse> apiResponse = ApiResponse.ok(AccountResponse.toResponse(accountEntity, accountClassificationEntity));
-
-        return apiResponse;
-    }
-     */
- 
 }

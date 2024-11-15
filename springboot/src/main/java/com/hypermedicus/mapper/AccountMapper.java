@@ -2,7 +2,7 @@ package com.hypermedicus.mapper;
 
 import com.hypermedicus.model.AccountDTO;
 import com.hypermedicus.rds.entity.AccountEntity;
-import com.hypermedicus.rds.entity.AccountClassificationEntity;
+import com.hypermedicus.rds.entity.AccountInformationEntity;
 import org.mapstruct.*;
 
 import java.util.UUID;
@@ -13,5 +13,5 @@ public interface AccountMapper {
     AccountEntity toAccountEntity(AccountDTO dto, UUID uuid);
 
     @Mapping(target = "uuid", expression = "java(uuid)")
-    AccountClassificationEntity toAccountClassificationEntity(AccountDTO dto, UUID uuid);
+    AccountInformationEntity toAccountInformationEntity(AccountDTO dto, UUID uuid);
 }

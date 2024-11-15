@@ -14,14 +14,14 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "account_classification")
+@Table(name = "account_information")
 @Getter
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class AccountClassificationEntity {
+public class AccountInformationEntity {
     @Id
     @Column(nullable = false, unique = true)
     private UUID uuid;

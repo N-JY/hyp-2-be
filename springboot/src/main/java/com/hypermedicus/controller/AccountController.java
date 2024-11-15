@@ -20,6 +20,5 @@ public class AccountController {
     public ApiResponse<AccountResponse> signUpAccount(@RequestBody AccountDTO dto) {
         AccountResponse accountResponse = accountService.signUpAccount(dto);
         return ApiResponse.ok(accountResponse);
-        //return accountService.signUpAccount(dto);
     }
 }

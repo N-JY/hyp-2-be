@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hypermedicus.payload.response.AccountResponse;
-import com.hypermedicus.rds.entity.AccountClassificationEntity;
+import com.hypermedicus.rds.entity.AccountInformationEntity;
 import com.hypermedicus.rds.entity.AccountEntity;
-import com.hypermedicus.rds.repository.AccountClassificationEntityRepository;
+import com.hypermedicus.rds.repository.AccountInformationEntityRepository;
 import com.hypermedicus.rds.repository.AccountEntityRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,24 +18,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AccountConnect {
     private final AccountEntityRepository accountEntityRepository;
-    private final AccountClassificationEntityRepository accountClassificationEntityRepository;
-/*
-    @Transactional(readOnly = true)
-    public ApiResponse<AccountResponse> getAccount(UUID uuid) {
-        AccountEntity accountEntity = accountEntityRepository.findByUuid(uuid)
-        .orElseThrow(() -> new NoSuchElementException("AccountEntity not found with UUID: " + uuid));
-        
-        AccountClassificationEntity accountClassificationEntity = accountClassificationEntityRepository.findByUuid(uuid)
-        .orElseThrow(() -> new NoSuchElementException("accountClassificationEntity not found with UUID: " + uuid));
-        
-        ApiResponse<AccountResponse> apiResponse = ApiResponse.ok(AccountResponse.toResponse(accountEntity, accountClassificationEntity));
+    private final AccountInformationEntityRepository accountInformationEntityRepository;
 
-        return apiResponse;
-    }
-*/
-    public void signUpAccount(AccountEntity accountEntity, AccountClassificationEntity accountClassificationEntity) {
+    public void signUpAccount(AccountEntity accountEntity, AccountInformationEntity accountInformationEntity) {
         accountEntityRepository.save(accountEntity);
-        accountClassificationEntityRepository.save(accountClassificationEntity);
+        accountInformationEntityRepository.save(accountInformationEntity);
     }
 
     @Transactional(readOnly = true)
@@ -43,9 +30,9 @@ public class AccountConnect {
         AccountEntity accountEntity = accountEntityRepository.findByUuid(uuid)
         .orElseThrow(() -> new NoSuchElementException("AccountEntity not found with UUID: " + uuid));
         
-        AccountClassificationEntity accountClassificationEntity = accountClassificationEntityRepository.findByUuid(uuid)
-        .orElseThrow(() -> new NoSuchElementException("accountClassificationEntity not found with UUID: " + uuid));       
+        AccountInformationEntity accountInformationEntity = accountInformationEntityRepository.findByUuid(uuid)
+        .orElseThrow(() -> new NoSuchElementException("accountInformationEntity not found with UUID: " + uuid));       
         
-        return AccountResponse.toResponse(accountEntity, accountClassificationEntity);
+        return AccountResponse.toResponse(accountEntity, accountInformationEntity);
     }
 }

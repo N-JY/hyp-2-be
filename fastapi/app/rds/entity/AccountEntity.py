@@ -17,8 +17,8 @@ class Account(Base):
     status = Column(String(1), nullable=True, default='A')
     termination_datetime = Column(String(14), nullable=True, default='99991231235959')
 
-class AccountClassification(Base):
-    __tablename__ = 'account_classification'
+class AccountInformation(Base):
+    __tablename__ = 'account_information'
     
     uuid = Column(UUID(as_uuid=True), primary_key=True, nullable=False)
     name = Column(String(30), nullable=True, default=None)

@@ -1,9 +1,7 @@
 import uuid
-from app.rds.entity.AccountEntity import Account, AccountClassification
-from app.model.AccountDTO import AccountSignUpDTO
+from app.rds.entity.AccountEntity import Account, AccountInformation
+from app.model.AccountDTO import AccountDTO
 from app.resources.Sqlalchemy import SessionLocal
-import pandas as pd
-import json
 
 class AccountConnect:
     @staticmethod
@@ -11,14 +9,14 @@ class AccountConnect:
         return SessionLocal()
 
     @staticmethod    
-    def signUpAccount(in_data: AccountSignUpDTO, in_uuid: uuid):
+    def signUpAccount(in_data: AccountDTO, in_uuid: uuid):
         new_account = Account(
             uuid=in_uuid,
             password=in_data.password
         )
 
         
-        new_classification = AccountClassification(
+        new_information = AccountInformation(
             uuid=in_uuid,
             name=in_data.name,
             email=in_data.email,
@@ -31,7 +29,7 @@ class AccountConnect:
         db = AccountConnect.database()
         try:
             db.add(new_account)
-            db.add(new_classification)   
+            db.add(new_information)   
             db.commit()
         finally:
             db.close()
@@ -44,8 +42,8 @@ class AccountConnect:
     def getAccount(in_uuid: uuid):
         db = AccountConnect.database()
         try:
-            result = db.query(Account, AccountClassification).join(
-                AccountClassification, Account.uuid == AccountClassification.uuid
+            result = db.query(Account, AccountInformation).join(
+                AccountInformation, Account.uuid == AccountInformation.uuid
             ).filter(Account.uuid == in_uuid).first()
 
             return result
